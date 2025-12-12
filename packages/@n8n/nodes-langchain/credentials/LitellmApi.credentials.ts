@@ -2,7 +2,6 @@ import type {
 	ICredentialTestRequest,
 	ICredentialType,
 	INodeProperties,
-	IAuthenticateGeneric,
 } from 'n8n-workflow';
 
 export class LitellmApi implements ICredentialType {
@@ -31,15 +30,6 @@ export class LitellmApi implements ICredentialType {
 			description: 'Optional API key for authentication with LiteLLM server',
 		},
 	];
-
-	authenticate: IAuthenticateGeneric = {
-		type: 'generic',
-		properties: {
-			headers: {
-				Authorization: '=Bearer {{$credentials.apiKey}}',
-			},
-		},
-	};
 
 	test: ICredentialTestRequest = {
 		request: {

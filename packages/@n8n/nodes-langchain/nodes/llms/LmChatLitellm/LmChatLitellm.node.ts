@@ -82,7 +82,7 @@ export class LmChatLitellm implements INodeType {
 		}
 
 		const model = new ChatOpenAI({
-			apiKey: (credentials.apiKey as string) || 'dummy-key',
+			apiKey: (credentials.apiKey as string) || 'sk-no-key-required',
 			model: modelName,
 			temperature: options.temperature ?? 0.7,
 			maxTokens: options.maxTokens === -1 ? undefined : options.maxTokens,
