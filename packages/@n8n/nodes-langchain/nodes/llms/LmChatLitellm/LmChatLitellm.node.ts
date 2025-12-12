@@ -7,6 +7,7 @@ import {
 	type SupplyData,
 } from 'n8n-workflow';
 
+import { getProxyAgent } from '@utils/httpProxyAgent';
 import { getConnectionHintNoticeField } from '@utils/sharedFields';
 
 import { litellmDescription, litellmModel, litellmOptions } from './description';
@@ -68,6 +69,9 @@ export class LmChatLitellm implements INodeType {
 
 		const configuration: ClientOptions = {
 			baseURL: credentials.baseUrl as string,
+			fetchOptions: {
+				dispatcher: getProxyAgent(credentials.baseUrl as string),
+			},
 		};
 
 		// Add authorization header if API key is provided
@@ -78,6 +82,7 @@ export class LmChatLitellm implements INodeType {
 		}
 
 		const model = new ChatOpenAI({
+			apiKey: (credentials.apiKey as string) || 'dummy-key',
 			model: modelName,
 			temperature: options.temperature ?? 0.7,
 			maxTokens: options.maxTokens === -1 ? undefined : options.maxTokens,
