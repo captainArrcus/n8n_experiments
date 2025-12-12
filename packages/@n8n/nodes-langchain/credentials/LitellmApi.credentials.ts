@@ -36,6 +36,10 @@ export class LitellmApi implements ICredentialType {
 			baseURL: '={{ $credentials.baseUrl }}',
 			url: '/v1/models',
 			method: 'GET',
+			headers: {
+				Authorization:
+					'={{$if($credentials.apiKey, "Bearer " + $credentials.apiKey, undefined)}}',
+			},
 		},
 	};
 }
