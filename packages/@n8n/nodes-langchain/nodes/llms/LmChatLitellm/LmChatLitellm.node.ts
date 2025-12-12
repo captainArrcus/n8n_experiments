@@ -14,6 +14,10 @@ import { litellmDescription, litellmModel, litellmOptions } from './description'
 import { makeN8nLlmFailedAttemptHandler } from '../n8nLlmFailedAttemptHandler';
 import { N8nLlmTracing } from '../N8nLlmTracing';
 
+// Placeholder API key for ChatOpenAI constructor requirement
+// LiteLLM authentication is handled via Authorization header in defaultHeaders
+const PLACEHOLDER_API_KEY = 'sk-no-key-required';
+
 export class LmChatLitellm implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'LiteLLM Chat Model',
@@ -67,10 +71,13 @@ export class LmChatLitellm implements INodeType {
 			maxRetries?: number;
 		};
 
+		// Trim trailing slash from base URL for consistency
+		const baseUrl = (credentials.baseUrl as string).replace(/\/$/, '');
+
 		const configuration: ClientOptions = {
-			baseURL: credentials.baseUrl as string,
+			baseURL: baseUrl,
 			fetchOptions: {
-				dispatcher: getProxyAgent(credentials.baseUrl as string),
+				dispatcher: getProxyAgent(baseUrl),
 			},
 		};
 
@@ -82,9 +89,7 @@ export class LmChatLitellm implements INodeType {
 		}
 
 		const model = new ChatOpenAI({
-			// ChatOpenAI requires an apiKey, but LiteLLM uses the Authorization header
-			// So we use a placeholder here and rely on the Authorization header for actual auth
-			apiKey: 'sk-no-key-required',
+			apiKey: PLACEHOLDER_API_KEY,
 			model: modelName,
 			temperature: options.temperature ?? 0.7,
 			maxTokens: options.maxTokens === -1 ? undefined : options.maxTokens,
