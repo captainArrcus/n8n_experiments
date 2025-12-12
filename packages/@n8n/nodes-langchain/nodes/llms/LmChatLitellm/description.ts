@@ -9,7 +9,7 @@ export const litellmDescription: Partial<INodeTypeDescription> = {
 	],
 	requestDefaults: {
 		ignoreHttpStatusErrors: true,
-		baseURL: '={{ $credentials.baseUrl.replace(new RegExp("/$"), "") }}',
+		baseURL: '={{ $credentials.baseUrl.replace(/\\/$/, "") }}',
 	},
 };
 
